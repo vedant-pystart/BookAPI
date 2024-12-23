@@ -1,27 +1,23 @@
-# import requests
+import requests 
+import json
+from PIL import Image
+from io import BytesIO
 
-# url = "https://randomuser.me/api"
-# response = requests.get(url)
-# data = response.json()
+booktitle = "Amish Tripathi"
 
-# gender = data['results'][0]['gender']
+response = requests.get(f"https://www.googleapis.com/books/v1/volumes?q={booktitle}&maxResults=5")
 
-# print(gender)
+data = response.json()
 
-import os
-from openai import OpenAI
+whatiwant = data["items"][0]["volumeInfo"]["imageLinks"]["thumbnail"]
 
+# "Pretty printing" the json
+# print(json.dumps(whatiwant, indent=4))
 
-client = OpenAI(
-api_key=os.environ.get("API_KEY"),  # This is the default and can be omitted
-)
+print(whatiwant)
 
-chat_completion = client.chat.completions.create(
-    messages=[
-        {
-            "role": "user",
-            "content": "Say this is a test",
-        }
-    ],
-    model="gpt-4o-mini",
-)
+imageresponse = requests.get(whatiwant)
+
+img = Image.open(BytesIO(imageresponse.content))
+
+img.show()

@@ -22,19 +22,20 @@ def getbooklist():
         title = book['volumeInfo'].get('title', 'No title available')
         author = book['volumeInfo'].get('authors', ['No author available'])[0]  # Getting the first author, if available
         page_count = book['volumeInfo'].get('pageCount', 'Page count not available')
+        image = book['volumeInfo']["imageLinks"]["thumbnail"]
 
         listitem = (f"{i}. {title}")
         i = i + 1
 
         # Create a button for each book
-        addlistitem = tk.Button(window, text=listitem, command=lambda t=title, a=author, p=page_count: clickbook(t, a, p))
+        addlistitem = tk.Button(window, text=listitem, command=lambda t=title, a=author, p=page_count, i=image: clickbook(t, a, p, i))
         addlistitem.pack()
 
         # Append the button to booklist to manage future clearing
         booklist.append(addlistitem)
 
 
-def clickbook(title, author, pagecount, ):
+def clickbook(title, author, pagecount, image ):
     window2 = tk.Tk()
     window2.title(title)
     titlelabel = tk.Label(window2, text = f"Title: {title}")
