@@ -1,7 +1,10 @@
 import requests 
 import json
-from PIL import Image
+from PIL import Image, ImageTk
 from io import BytesIO
+import tkinter as tk
+
+window = tk.Tk()
 
 booktitle = "Amish Tripathi"
 
@@ -14,10 +17,17 @@ whatiwant = data["items"][0]["volumeInfo"]["imageLinks"]["thumbnail"]
 # "Pretty printing" the json
 # print(json.dumps(whatiwant, indent=4))
 
-print(whatiwant)
-
 imageresponse = requests.get(whatiwant)
 
 img = Image.open(BytesIO(imageresponse.content))
 
-img.show()
+
+
+tk_img = ImageTk.PhotoImage(img)
+
+window.tk_img = tk_img
+
+imagelabel = tk.Label(window, image = tk_img )
+imagelabel.pack()
+
+window.mainloop()
